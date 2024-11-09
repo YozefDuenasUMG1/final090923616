@@ -1,0 +1,56 @@
+-- Crear la base de datos
+CREATE DATABASE IF NOT EXISTS final_base_datos;
+USE final_base_datos;
+
+-- Crear tabla tipo_pasta
+CREATE TABLE tipo_pasta (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    descripcion VARCHAR(50) NOT NULL
+);
+
+-- Crear tabla libros
+CREATE TABLE libros (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    titulo VARCHAR(100) NOT NULL,
+    autor VARCHAR(100) NOT NULL,
+    isbn VARCHAR(13) NOT NULL,
+    clase VARCHAR(50) NOT NULL,
+    tipo_pasta_id INT,
+    FOREIGN KEY (tipo_pasta_id) REFERENCES tipo_pasta(id)
+);
+
+-- Insertar tipos de pasta
+INSERT INTO tipo_pasta (descripcion) VALUES
+    ('Pasta dura'),
+    ('Pasta blanda');
+
+-- Insertar libros de clase numérica
+INSERT INTO libros (titulo, autor, isbn, clase, tipo_pasta_id) VALUES
+    ('Cálculo de una Variable', 'James Stewart', '9786073237451', 'numérica', 1),
+    ('Álgebra Lineal', 'Stanley I. Grossman', '9786074813746', 'numérica', 2),
+    ('Matemáticas Discretas', 'Richard Johnsonbaugh', '9786073214186', 'numérica', 1),
+    ('Análisis Numérico', 'Richard L. Burden', '9786074818840', 'numérica', 2),
+    ('Estadística para Ingenieros', 'Douglas C. Montgomery', '9786073238335', 'numérica', 1);
+
+-- Insertar libros de programación web
+INSERT INTO libros (titulo, autor, isbn, clase, tipo_pasta_id) VALUES
+    ('JavaScript: La Guía Definitiva', 'David Flanagan', '9786075380674', 'programacion web', 1),
+    ('PHP y MySQL: Desarrollo Web', 'Luke Welling', '9786073238991', 'programacion web', 2),
+    ('HTML5 y CSS3', 'Elizabeth Castro', '9786077075813', 'programacion web', 2),
+    ('Node.js Web Development', 'David Herron', '9786076229156', 'programacion web', 1),
+    ('Java Web Services', 'Martin Kalin', '9786073227089', 'programacion web', 2);
+
+-- Consulta para verificar los tipos de pasta
+SELECT * FROM tipo_pasta;
+
+-- Consulta para verificar los libros registrados con su tipo de pasta
+SELECT 
+    l.id,
+    l.titulo,
+    l.autor,
+    l.isbn,
+    l.clase,
+    tp.descripcion as tipo_pasta
+FROM libros l
+INNER JOIN tipo_pasta tp ON l.tipo_pasta_id = tp.id
+ORDER BY l.clase, l.titulo;
